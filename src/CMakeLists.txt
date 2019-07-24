@@ -1,5 +1,7 @@
 ﻿set(ipc
-    ipc/shm/shared_memory.cpp)
+    ipc/shm/shared_memory.cpp
+    ipc/sync/event.cpp
+    ipc/sync/named_event.cpp)
 
 set(net
     net/serial/serial.cpp
