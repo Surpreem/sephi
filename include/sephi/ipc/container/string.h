@@ -8,12 +8,12 @@
 
 namespace sephi::ipc {
 
-    using BasicString = boost_ipc::basic_string<
+    using StringBase = boost_ipc::basic_string<
         char, std::char_traits<char>, SharedMemory::Allocator<char>>;
     
-    class String : public BasicString {
+    class String : public StringBase {
     public:
-        using BasicString::BasicString;
+        using StringBase::StringBase;
     };
 
 }
