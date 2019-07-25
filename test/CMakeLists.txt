@@ -16,10 +16,14 @@ if(ENABLE_CATCH)
         net/tcp/tcp_test.cpp
         net/udp/udp_test.cpp)
 
+    set(sync
+        sync/event_test.cpp)
+
     add_executable(sephi_test 
         main.cpp
         ${ipc}
-        ${net})
+        ${net}
+        ${sync})
 
     target_link_libraries(sephi_test
         PRIVATE Catch2::Catch2

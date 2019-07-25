@@ -11,10 +11,14 @@ set(net
     net/tcp/server/session.cpp
     net/udp/udp.cpp)
 
+set(sync
+    sync/event.cpp)
+
 set(util
     util/random_string.cpp)
 
 add_library(sephi
     ${ipc}
     ${net}
+    ${sync}
     ${util})
