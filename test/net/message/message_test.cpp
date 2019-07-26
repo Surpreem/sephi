@@ -121,7 +121,7 @@ SCENARIO("A message can return the data", "[message]")
             {
                 REQUIRE(raw_data_size == message.size());
                 REQUIRE([&message] {
-                        for (auto idx{0}; message.size() != idx; ++idx) {
+                        for (auto idx{0u}; message.size() != idx; ++idx) {
                             if (message.data()[idx] != raw_data[idx])
                                 return false;
                         }
