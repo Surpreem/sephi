@@ -131,3 +131,32 @@ SCENARIO("A message can return the data", "[message]")
         }
     }
 }
+
+SCENARIO("Messages can be concatenated", "[message]")
+{
+    GIVEN("two messages from a raw C array with 10 elements")
+    {
+        Message message1{raw_data, sizeof(raw_data)};
+        Message message2{raw_data, sizeof(raw_data)};
+
+        WHEN("two messages are concatenated")
+        {
+            auto message3{message1 + message2};
+
+            THEN("the new message's size is two times of one message")
+            {
+                REQUIRE(raw_data_size * 2 == message3.size());
+            }
+        }
+
+        WHEN("one message is appended to the other")
+        {
+            message1 += message2;
+
+            THEN("the result's size is two times of one message")
+            {
+                REQUIRE(raw_data_size * 2 == message1.size());
+            }
+        }
+    }
+}

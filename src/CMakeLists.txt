@@ -9,6 +9,7 @@ set(net
     net/tcp/client/client.cpp
     net/tcp/server/server.cpp
     net/tcp/server/session.cpp
+    net/types/message.cpp
     net/udp/udp.cpp)
 
 set(sync

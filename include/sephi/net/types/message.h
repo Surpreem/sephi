@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #include <cstdint>
@@ -28,6 +28,12 @@ namespace sephi::net {
         Message& operator=(Message const&) = default;
         Message& operator=(Message&&) noexcept = default;
 
+        Message& operator+=(Message const& rhs)
+        {
+            data_.insert(data_.cend(), rhs.data_.cbegin(), rhs.data_.cend());
+            return *this;
+        }
+
         [[nodiscard]] uint8_t const* data() const
         {
             return &data_[0];
@@ -47,5 +53,8 @@ namespace sephi::net {
     private:
         std::vector<uint8_t> data_;
     };
+
+
+    Message operator+(Message const& lhs, Message const& rhs);
 
 }
