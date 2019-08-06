@@ -18,6 +18,9 @@ set(sync
 set(util
     util/random_string.cpp)
 
+# for debug library
+set(CMAKE_DEBUG_POSTFIX d)
+
 add_library(sephi
     ${ipc}
     ${net}
