@@ -4,24 +4,22 @@
 #include "catch2/catch.hpp"
 
 #include "sephi/ipc/shm/shared_memory.h"
-#include "sephi/ipc/shm/types.h"
 #include "sephi/ipc/sync/mutex.h"
 #include "sephi/ipc/sync/named_mutex.h"
 #include "sephi/ipc/sync/scoped_lock.h"
-#include "sephi/ipc/sync/types.h"
 #include "sephi/util/random_string.h"
 
 
 using std::thread;
 using std::ref;
 
+using sephi::ipc::create_only;
 using sephi::ipc::Mutex;
 using sephi::ipc::NamedMutex;
+using sephi::ipc::open_only;
+using sephi::ipc::open_or_create;
 using sephi::ipc::ScopedLock;
 using sephi::ipc::SharedMemory;
-using sephi::ipc::open_or_create;
-using sephi::ipc::shm_create_only;
-using sephi::ipc::shm_open_only;
 using sephi::util::random_string;
 
 
@@ -88,8 +86,8 @@ SCENARIO("Two threads synchronise via a named mutex", "[sync]")
 SCENARIO("Two threads synchronise via a anonymous mutex", "[sync]")
 {
     auto const shm_name{random_string()};
-    auto m1{SharedMemory{shm_create_only, shm_name, shm_size}};
-    auto m2{SharedMemory{shm_open_only, shm_name}};
+    auto m1{SharedMemory{create_only, shm_name, shm_size}};
+    auto m2{SharedMemory{open_only, shm_name}};
 
     GIVEN("a sharing variable and a anonymous mutex")
     {

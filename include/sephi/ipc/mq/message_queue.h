@@ -1,8 +1,10 @@
 ﻿#pragma once
 
 
-#include "sephi/ipc/mq/boost/message_queue_mod.hpp"
 #include "boost/date_time/posix_time/posix_time_types.hpp"
+
+#include "sephi/ipc/creation_tags.h"
+#include "sephi/ipc/mq/boost/message_queue_mod.hpp"
 
 
 namespace boost_ipc = boost::interprocess;
@@ -10,9 +12,6 @@ namespace boost_ipc = boost::interprocess;
 
 namespace sephi::ipc {
 
-    class MqCreateOnly;
-    class MqOpenOnly;
-    
     class MessageQueue {
     public:
         using size_type = boost_ipc::message_queue::size_type;
@@ -20,11 +19,11 @@ namespace sephi::ipc {
 
 
         MessageQueue(
-            MqCreateOnly,
+            create_only_t,
             std::string const& name,
             size_type max_msg_count,
             size_type max_msg_size);
-        MessageQueue(MqOpenOnly, std::string const& name);
+        MessageQueue(open_only_t, std::string const& name);
 
         ~MessageQueue() noexcept;
 

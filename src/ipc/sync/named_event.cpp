@@ -1,7 +1,7 @@
 ﻿#include "sephi/ipc/sync/named_event.h"
 
+#include "sephi/ipc/creation_tags.h"
 #include "sephi/ipc/sync/scoped_lock.h"
-#include "sephi/ipc/sync/types.h"
 
 
 using std::string;

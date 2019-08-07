@@ -1,17 +1,16 @@
 ﻿#include "catch2/catch.hpp"
 
-#include "sephi/ipc/shm/shared_memory.h"
-#include "sephi/ipc/shm/types.h"
 #include "sephi/ipc/container/string.h"
 #include "sephi/ipc/container/vector.h"
+#include "sephi/ipc/shm/shared_memory.h"
 #include "sephi/util/random_string.h"
 
 
 using std::make_pair;
 
+using sephi::ipc::create_only;
+using sephi::ipc::open_only;
 using sephi::ipc::SharedMemory;
-using sephi::ipc::shm_create_only;
-using sephi::ipc::shm_open_only;
 using sephi::ipc::String;
 using sephi::ipc::Vector;
 using sephi::util::random_string;
@@ -34,8 +33,8 @@ SCENARIO("Shared memory can be created successfully", "[shm]")
                 auto const name{random_string()};
 
                 REQUIRE_NOTHROW(
-                    SharedMemory{shm_create_only, name, shm_size},
-                    SharedMemory{shm_open_only, name});
+                    SharedMemory{create_only, name, shm_size},
+                    SharedMemory{open_only, name});
             }
             
         }
@@ -45,8 +44,8 @@ SCENARIO("Shared memory can be created successfully", "[shm]")
 SCENARIO("Objects can be created successfully", "[shm]")
 {
     auto const shm_name{random_string()};
-    auto m1{SharedMemory{shm_create_only, shm_name, shm_size}};
-    auto m2{SharedMemory{shm_open_only, shm_name}};
+    auto m1{SharedMemory{create_only, shm_name, shm_size}};
+    auto m2{SharedMemory{open_only, shm_name}};
 
     GIVEN("primitive type")
     {

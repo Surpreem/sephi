@@ -1,20 +1,19 @@
 ﻿#include "sephi/ipc/mq/message_queue.h"
 
-#include "sephi/ipc/shm/types.h"
-
 
 using std::make_unique;
 
-using boost_ipc::create_only;
-using boost_ipc::open_only;
 using boost_ipc::message_queue;
 using boost::posix_time::microsec_clock;
 using boost::posix_time::ptime;
 using boost::posix_time::seconds;
 
+using sephi::ipc::create_only;
+using sephi::ipc::open_only;
+
 
 sephi::ipc::MessageQueue::MessageQueue(
-    MqCreateOnly,
+    create_only_t,
     std::string const& name,
     size_type max_msg_count,
     size_type max_msg_size)
@@ -24,7 +23,7 @@ sephi::ipc::MessageQueue::MessageQueue(
         create_only, name_.c_str(), max_msg_count, max_msg_size);
 }
 
-sephi::ipc::MessageQueue::MessageQueue(MqOpenOnly, std::string const& name)
+sephi::ipc::MessageQueue::MessageQueue(open_only_t, std::string const& name)
     : name_{name}
 {
     mq_ = make_unique<message_queue>(open_only, name_.c_str());

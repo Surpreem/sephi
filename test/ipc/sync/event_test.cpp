@@ -4,7 +4,6 @@
 #include "catch2/catch.hpp"
 
 #include "sephi/ipc/shm/shared_memory.h"
-#include "sephi/ipc/shm/types.h"
 #include "sephi/ipc/sync/event.h"
 #include "sephi/ipc/sync/named_event.h"
 #include "sephi/util/random_string.h"
@@ -16,11 +15,11 @@ using std::this_thread::sleep_for;
 using std::thread;
 using std::ref;
 
+using sephi::ipc::create_only;
 using sephi::ipc::Event;
 using sephi::ipc::NamedEvent;
+using sephi::ipc::open_only;
 using sephi::ipc::SharedMemory;
-using sephi::ipc::shm_create_only;
-using sephi::ipc::shm_open_only;
 using sephi::util::random_string;
 
 
@@ -79,8 +78,8 @@ SCENARIO("Synchronise via a named event", "[sync]")
 SCENARIO("Synchronise via a anonymous event", "[sync]")
 {
     auto const shm_name{random_string()};
-    auto m1{SharedMemory{shm_create_only, shm_name, shm_size}};
-    auto m2{SharedMemory{shm_open_only, shm_name}};
+    auto m1{SharedMemory{create_only, shm_name, shm_size}};
+    auto m2{SharedMemory{open_only, shm_name}};
 
     GIVEN("a sharing variable")
     {

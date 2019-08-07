@@ -1,21 +1,20 @@
 ﻿#include "sephi/ipc/shm/shared_memory.h"
 
-#include "sephi/ipc/shm/types.h"
-
 
 using std::make_unique;
-using boost_ipc::create_only;
-using boost_ipc::open_only;
+
+using sephi::ipc::create_only;
+using sephi::ipc::open_only;
 
 
 sephi::ipc::SharedMemory::SharedMemory(
-    ShmCreateOnly, std::string const& name, size_t size)
+    create_only_t, std::string const& name, size_t size)
     : name_{name}
 {
     memory_ = make_unique<ManagedSharedMemory>(create_only, name_.c_str(), size);
 }
 
-sephi::ipc::SharedMemory::SharedMemory(ShmOpenOnly, std::string const& name)
+sephi::ipc::SharedMemory::SharedMemory(open_only_t, std::string const& name)
     : name_{name}
 {
     memory_ = make_unique<ManagedSharedMemory>(open_only, name_.c_str());

@@ -10,8 +10,8 @@ namespace sephi::ipc {
     using open_only_t = boost::interprocess::open_only_t;
     using open_or_create_t = boost::interprocess::open_or_create_t;
 
-    static create_only_t create_only;
-    static open_only_t open_only;
-    static open_or_create_t open_or_create;
+    using boost::interprocess::create_only;
+    using boost::interprocess::open_only;
+    using boost::interprocess::open_or_create;
 
 }

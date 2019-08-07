@@ -7,7 +7,8 @@
 #   include "boost/interprocess/managed_shared_memory.hpp"
 #endif
 
-#include "sephi/ipc/shm/exception.h"
+#include "sephi/ipc/creation_tags.h"
+#include "sephi/ipc/exception.h"
 
 
 namespace {
@@ -21,9 +22,6 @@ namespace boost_ipc = boost::interprocess;
 
 
 namespace sephi::ipc {
-
-    class ShmCreateOnly;
-    class ShmOpenOnly;
 
     class SharedMemory {
 #if _WIN32
@@ -60,8 +58,8 @@ namespace sephi::ipc {
         template <typename T>
         using Deleter = typename ManagedSharedMemory::deleter<T>::type;
 
-        SharedMemory(ShmCreateOnly, std::string const& name, size_t size);
-        SharedMemory(ShmOpenOnly, std::string const& name);
+        SharedMemory(create_only_t, std::string const& name, size_t size);
+        SharedMemory(open_only_t, std::string const& name);
 
         SharedMemory(SharedMemory const&) = delete;
         SharedMemory(SharedMemory&&) noexcept = default;

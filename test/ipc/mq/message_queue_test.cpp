@@ -1,13 +1,12 @@
 ﻿#include "catch2/catch.hpp"
 
 #include "sephi/ipc/mq/message_queue.h"
-#include "sephi/ipc/shm/types.h"
 #include "sephi/util/random_string.h"
 
 
+using sephi::ipc::create_only;
 using sephi::ipc::MessageQueue;
-using sephi::ipc::mq_create_only;
-using sephi::ipc::mq_open_only;
+using sephi::ipc::open_only;
 using sephi::util::random_string;
 
 
@@ -23,8 +22,8 @@ SCENARIO("They can communicate via message queue", "[mq]")
 {
     auto const mq_name{random_string()};
     auto mq1{
-        MessageQueue{mq_create_only, mq_name, max_msg_count, sizeof(int)}};
-    auto mq2{MessageQueue{mq_open_only, mq_name}};
+        MessageQueue{create_only, mq_name, max_msg_count, sizeof(int)}};
+    auto mq2{MessageQueue{open_only, mq_name}};
 
     GIVEN("100 numbers")
     {
