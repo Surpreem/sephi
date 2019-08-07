@@ -1,4 +1,5 @@
 ﻿set(ipc
+    ipc/mq/message_queue.cpp
     ipc/shm/shared_memory.cpp
     ipc/sync/event.cpp
     ipc/sync/named_event.cpp)

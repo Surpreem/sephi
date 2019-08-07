@@ -5,6 +5,7 @@ configure_file(net/serial/config.yaml ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} COPYONLY
 
 if(ENABLE_CATCH)
     set(ipc
+        ipc/mq/message_queue_test.cpp
         ipc/shm/shared_memory_test.cpp
         ipc/sync/condition_test.cpp
         ipc/sync/event_test.cpp

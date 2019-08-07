@@ -2,9 +2,9 @@
 
 
 #if _WIN32
-#include "boost/interprocess/managed_windows_shared_memory.hpp"
+#   include "boost/interprocess/managed_windows_shared_memory.hpp"
 #else
-#include "boost/interprocess/managed_shared_memory.hpp"
+#   include "boost/interprocess/managed_shared_memory.hpp"
 #endif
 
 #include "sephi/ipc/shm/exception.h"
