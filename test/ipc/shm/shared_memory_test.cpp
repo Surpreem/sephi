@@ -68,6 +68,32 @@ SCENARIO("Objects can be created successfully", "[shm]")
         }
     }
 
+    GIVEN("C array type of size 10")
+    {
+        constexpr auto size{10};
+        struct Arr {
+            int arr[size];
+        };
+
+        auto const obj_name{random_string()};
+        auto& m1_obj{m1.construct<Arr>(obj_name)};
+
+        WHEN("find it in the shared memory and change its values")
+        {
+            auto& m2_obj{m2.find<Arr>(obj_name)};
+            auto val{10};
+            for (auto& elem : m2_obj.arr)
+                elem = val--;
+
+            THEN("the values of the both objects are equal")
+            {
+                for (auto i{0}; size != i; ++i)
+                    REQUIRE(m1_obj.arr[i] == m2_obj.arr[i]);
+                REQUIRE(&m1_obj != &m2_obj);
+            }
+        }
+    }
+
     GIVEN("values for std::pair type")
     {
         auto const x{149};
