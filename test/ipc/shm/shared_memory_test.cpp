@@ -10,6 +10,7 @@ using std::make_pair;
 
 using sephi::ipc::create_only;
 using sephi::ipc::open_only;
+using sephi::ipc::open_or_create;
 using sephi::ipc::SharedMemory;
 using sephi::ipc::String;
 using sephi::ipc::Vector;
@@ -36,7 +37,21 @@ SCENARIO("Shared memory can be created successfully", "[shm]")
                     SharedMemory{create_only, name, shm_size},
                     SharedMemory{open_only, name});
             }
-            
+        }
+
+        WHEN("create shared memory in any order")
+        {
+            THEN("create shared memory successfully")
+            {
+                auto const name{random_string()};
+
+                REQUIRE_NOTHROW(
+                    SharedMemory{open_or_create, name, shm_size},
+                    SharedMemory{open_or_create, name, shm_size});
+                REQUIRE_THROWS(
+                    SharedMemory{open_or_create, name, shm_size},
+                    SharedMemory{create_only, name, shm_size});
+            }
         }
     }
 }

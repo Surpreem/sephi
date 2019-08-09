@@ -60,6 +60,7 @@ namespace sephi::ipc {
 
         SharedMemory(create_only_t, std::string const& name, size_t size);
         SharedMemory(open_only_t, std::string const& name);
+        SharedMemory(open_or_create_t, std::string const& name, size_t size);
 
         SharedMemory(SharedMemory const&) = delete;
         SharedMemory(SharedMemory&&) noexcept = default;

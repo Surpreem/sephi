@@ -11,13 +11,22 @@ sephi::ipc::SharedMemory::SharedMemory(
     create_only_t, std::string const& name, size_t size)
     : name_{name}
 {
-    memory_ = make_unique<ManagedSharedMemory>(create_only, name_.c_str(), size);
+    memory_ =
+        make_unique<ManagedSharedMemory>(create_only, name_.c_str(), size);
 }
 
 sephi::ipc::SharedMemory::SharedMemory(open_only_t, std::string const& name)
     : name_{name}
 {
     memory_ = make_unique<ManagedSharedMemory>(open_only, name_.c_str());
+}
+
+sephi::ipc::SharedMemory::SharedMemory(
+    open_or_create_t, std::string const& name, size_t size)
+    : name_{name}
+{
+    memory_ =
+        make_unique<ManagedSharedMemory>(open_or_create, name_.c_str(), size);
 }
 
 sephi::ipc::SharedMemory::~SharedMemory() noexcept
