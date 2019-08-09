@@ -7,6 +7,7 @@
 using sephi::ipc::create_only;
 using sephi::ipc::MessageQueue;
 using sephi::ipc::open_only;
+using sephi::ipc::open_or_create;
 using sephi::util::random_string;
 
 
@@ -17,6 +18,44 @@ namespace {
 
 }
 
+
+SCENARIO("Message queue can be created successfully", "[mq]")
+{
+    GIVEN("not exist any message queue")
+    {
+        WHEN("create message queue")
+        {
+            THEN("create message queue successfully")
+            {
+                auto const name{random_string()};
+
+                REQUIRE_NOTHROW(
+                    MessageQueue{
+                        create_only, name, max_msg_count, sizeof(int)},
+                    MessageQueue{open_only, name});
+            }
+        }
+
+        WHEN("create message queue in any order")
+        {
+            THEN("create message queue successfully")
+            {
+                auto const name{random_string()};
+
+                REQUIRE_NOTHROW(
+                    MessageQueue{
+                        open_or_create, name, max_msg_count, sizeof(int)},
+                    MessageQueue{
+                        open_or_create, name, max_msg_count, sizeof(int)});
+                REQUIRE_THROWS(
+                    MessageQueue{
+                        open_or_create, name, max_msg_count, sizeof(int)},
+                    MessageQueue{
+                        create_only, name, max_msg_count, sizeof(int)});
+            }
+        }
+    }
+}
 
 SCENARIO("They can communicate via message queue", "[mq]")
 {

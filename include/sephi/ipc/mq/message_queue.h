@@ -24,6 +24,11 @@ namespace sephi::ipc {
             size_type max_msg_count,
             size_type max_msg_size);
         MessageQueue(open_only_t, std::string const& name);
+        MessageQueue(
+            open_or_create_t,
+            std::string const& name,
+            size_type max_msg_count,
+            size_type max_msg_size);
 
         ~MessageQueue() noexcept;
 

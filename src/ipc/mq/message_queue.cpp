@@ -10,6 +10,7 @@ using boost::posix_time::seconds;
 
 using sephi::ipc::create_only;
 using sephi::ipc::open_only;
+using sephi::ipc::open_or_create;
 
 
 sephi::ipc::MessageQueue::MessageQueue(
@@ -27,6 +28,17 @@ sephi::ipc::MessageQueue::MessageQueue(open_only_t, std::string const& name)
     : name_{name}
 {
     mq_ = make_unique<message_queue>(open_only, name_.c_str());
+}
+
+sephi::ipc::MessageQueue::MessageQueue(
+    open_or_create_t,
+    std::string const& name,
+    size_type max_msg_count,
+    size_type max_msg_size)
+    : name_{name}
+{
+    mq_ = make_unique<message_queue>(
+        open_or_create, name_.c_str(), max_msg_count, max_msg_size);
 }
 
 sephi::ipc::MessageQueue::~MessageQueue() noexcept
