@@ -53,7 +53,7 @@ if(ENABLE_ASIO_CPP)
     download_project(
         PROJ asio
         GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-        GIT_TAG asio-1-13-0
+        GIT_TAG asio-1-14-0
         ${UPDATE_DISCONNECTED_IF_AVAILABLE}
     )
 

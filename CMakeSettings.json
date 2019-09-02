@@ -33,7 +33,7 @@
         },
         {
           "name": "BOOST_HOME",
-          "value": "C:/Libs/boost_1_70_0",
+          "value": "C:/Libs/boost_1_71_0",
           "type": "STRING"
         },
         {
@@ -63,7 +63,7 @@
         },
         {
           "name": "ENABLE_YAML_CPP",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         }
       ]
@@ -101,7 +101,7 @@
         },
         {
           "name": "BOOST_HOME",
-          "value": "C:/Libs/boost_1_70_0",
+          "value": "C:/Libs/boost_1_71_0",
           "type": "STRING"
         },
         {
@@ -131,7 +131,7 @@
         },
         {
           "name": "ENABLE_YAML_CPP",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         }
       ]
@@ -169,7 +169,7 @@
         },
         {
           "name": "BOOST_HOME",
-          "value": "C:/Libs/boost_1_70_0",
+          "value": "C:/Libs/boost_1_71_0",
           "type": "STRING"
         },
         {
@@ -199,7 +199,7 @@
         },
         {
           "name": "ENABLE_YAML_CPP",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         }
       ]
@@ -237,7 +237,7 @@
         },
         {
           "name": "BOOST_HOME",
-          "value": "C:/Libs/boost_1_70_0",
+          "value": "C:/Libs/boost_1_71_0",
           "type": "STRING"
         },
         {
@@ -267,7 +267,7 @@
         },
         {
           "name": "ENABLE_YAML_CPP",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         }
       ]
