@@ -23,10 +23,10 @@ namespace sephi::net::tcp {
             ServerPacketHandler packet_handler);
         ~Server() noexcept;
 
-        void write_to_all(Message const& message);
-        bool write_to(SessionId session_id, Message const& message);
+        void write_to_all(Chunk const& chunk);
+        bool write_to(SessionId session_id, Chunk const& chunk);
         void write_to_all_except(
-            SessionId session_id, Message const& message);
+            SessionId session_id, Chunk const& chunk);
 
         void leave(SessionPtr session);
         void close();

@@ -22,9 +22,9 @@ public:
         client_.close();
     }
 
-    bool write(sephi::net::Message const& message)
+    bool write(sephi::net::Chunk const& chunk)
     {
-        return client_.write(message);
+        return client_.write(chunk);
     }
 
     [[nodiscard]] bool is_connected() const

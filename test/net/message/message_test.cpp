@@ -1,6 +1,6 @@
 ﻿#include "catch2/catch.hpp"
 
-#include "sephi/net/types/message.h"
+#include "sephi/net/types/Chunk.h"
 
 
 using namespace sephi::net;
@@ -16,8 +16,8 @@ namespace {
 
 
 SCENARIO(
-    "Message can be created with various constructors and operators",
-    "[message]")
+    "Chunk can be created with various constructors and operators",
+    "[chunk]")
 {
     GIVEN("a raw C array with 10 elements")
     {
@@ -25,69 +25,69 @@ SCENARIO(
 
         WHEN("the default constructor is given")
         {
-            Message message;
+            Chunk chunk;
 
             THEN("the size is zero")
             {
-                REQUIRE(size_zero == message.size());
+                REQUIRE(size_zero == chunk.size());
             }
         }
 
         WHEN("it is given the constructor to receive data and the data's size")
         {
-            Message message{raw_data, sizeof(raw_data)};
+            Chunk chunk{raw_data, sizeof(raw_data)};
 
             THEN("the size is 10")
             {
-                REQUIRE(raw_data_size == message.size());
+                REQUIRE(raw_data_size == chunk.size());
             }
         }
 
         WHEN("the copy constructor is given")
         {
-            Message message1{raw_data, sizeof(raw_data)};
-            Message message2{message1};
+            Chunk chunk1{raw_data, sizeof(raw_data)};
+            Chunk chunk2{chunk1};
         
             THEN("the size is 10")
             {
-                REQUIRE(raw_data_size == message2.size());
+                REQUIRE(raw_data_size == chunk2.size());
             }
         }
         
         WHEN("the copy assignment operator is given")
         {
-            Message message1{raw_data, sizeof(raw_data)};
-            Message message2;
-            message2 = message1;
+            Chunk chunk1{raw_data, sizeof(raw_data)};
+            Chunk chunk2;
+            chunk2 = chunk1;
         
             THEN("the size is 10")
             {
-                REQUIRE(raw_data_size == message2.size());
+                REQUIRE(raw_data_size == chunk2.size());
             }
         }
 
         WHEN("the move constructor is given")
         {
-            Message message1{raw_data, sizeof(raw_data)};
-            Message message2{std::move(message1)};
+            Chunk chunk1{raw_data, sizeof(raw_data)};
+            Chunk chunk2{std::move(chunk1)};
 
             THEN("the original's size is 0 and the new one's is 10")
             {
-                REQUIRE(size_zero == message1.size());
-                REQUIRE(raw_data_size == message2.size());
+                REQUIRE(size_zero == chunk1.size());
+                REQUIRE(raw_data_size == chunk2.size());
             }
         }
 
         WHEN("the move assignment operator is given")
         {
-            Message message1{raw_data, sizeof(raw_data)};
-            Message message2;
-            message2 = std::move(message1);
+            Chunk chunk1{raw_data, sizeof(raw_data)};
+            Chunk chunk2;
+            chunk2 = std::move(chunk1);
 
             THEN("the original's size is 0 and the new one's is 10")
             {
-                REQUIRE(size_zero == message1.size());
-                REQUIRE(raw_data_size == message2.size());
+                REQUIRE(size_zero == chunk1.size());
+                REQUIRE(raw_data_size == chunk2.size());
             }
         }
 
@@ -97,32 +97,32 @@ SCENARIO(
                 std::cbegin(raw_data), std::cend(raw_data)};
             REQUIRE(raw_data_size == data.size());
 
-            Message message(cbegin(data), cend(data));
+            Chunk chunk(cbegin(data), cend(data));
 
             THEN("the size is 10")
             {
-                REQUIRE(raw_data_size == message.size());
+                REQUIRE(raw_data_size == chunk.size());
             }
         }
     }
 }
 
-SCENARIO("A message can return the data", "[message]")
+SCENARIO("Chunk can return the data", "[chunk]")
 {
     GIVEN("a raw C array with 10 elements")
     {
         REQUIRE(raw_data_size == sizeof(raw_data));
 
-        WHEN("a message is created with the raw array")
+        WHEN("Chunk is created with the raw array")
         {
-            Message message{raw_data, raw_data_size};
+            Chunk chunk{raw_data, raw_data_size};
 
-            THEN("the message's data are the same with the raw array")
+            THEN("Chunk's data are the same with the raw array")
             {
-                REQUIRE(raw_data_size == message.size());
-                REQUIRE([&message] {
-                        for (auto idx{0u}; message.size() != idx; ++idx) {
-                            if (message.data()[idx] != raw_data[idx])
+                REQUIRE(raw_data_size == chunk.size());
+                REQUIRE([&chunk] {
+                        for (auto idx{0u}; chunk.size() != idx; ++idx) {
+                            if (chunk.data()[idx] != raw_data[idx])
                                 return false;
                         }
                         return true;
@@ -132,30 +132,30 @@ SCENARIO("A message can return the data", "[message]")
     }
 }
 
-SCENARIO("Messages can be concatenated", "[message]")
+SCENARIO("Chunk can be concatenated", "[chunk]")
 {
-    GIVEN("two messages from a raw C array with 10 elements")
+    GIVEN("two Chunks from a raw C array with 10 elements")
     {
-        Message message1{raw_data, sizeof(raw_data)};
-        Message message2{raw_data, sizeof(raw_data)};
+        Chunk chunk1{raw_data, sizeof(raw_data)};
+        Chunk chunk2{raw_data, sizeof(raw_data)};
 
-        WHEN("two messages are concatenated")
+        WHEN("two Chunks are concatenated")
         {
-            auto message3{message1 + message2};
+            auto chunk3{chunk1 + chunk2};
 
-            THEN("the new message's size is two times of one message")
+            THEN("the new Chunk's size is two times of one Chunk")
             {
-                REQUIRE(raw_data_size * 2 == message3.size());
+                REQUIRE(raw_data_size * 2 == chunk3.size());
             }
         }
 
-        WHEN("one message is appended to the other")
+        WHEN("one Chunk is appended to the other")
         {
-            message1 += message2;
+            chunk1 += chunk2;
 
-            THEN("the result's size is two times of one message")
+            THEN("the result's size is two times of one Chunk")
             {
-                REQUIRE(raw_data_size * 2 == message1.size());
+                REQUIRE(raw_data_size * 2 == chunk1.size());
             }
         }
     }

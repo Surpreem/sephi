@@ -23,8 +23,8 @@ namespace sephi::net::udp {
 
         void close();
 
-        void write_to(Remote const& remote, Message const& message);
-        void broadcast(uint16_t port, Message const& message);
+        void write_to(Remote const& remote, Chunk const& chunk);
+        void broadcast(uint16_t port, Chunk const& chunk);
 
     private:
         void do_read();

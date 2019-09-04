@@ -47,16 +47,16 @@ void sephi::net::tcp::Client::close()
     }
 }
 
-bool sephi::net::tcp::Client::write(Message const& message)
+bool sephi::net::tcp::Client::write(Chunk const& chunk)
 {
     if (!is_connected())
         return false;
 
     post(
         io_context_,
-        [this, message] {
+        [this, chunk] {
             auto const write_in_progress{!sending_messages_.empty()};
-            sending_messages_.emplace_back(message);
+            sending_messages_.emplace_back(chunk);
             if (!write_in_progress)
                 do_write();
         });

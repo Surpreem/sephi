@@ -45,29 +45,29 @@ sephi::net::tcp::Server::~Server()
     runner_.join();
 }
 
-void sephi::net::tcp::Server::write_to_all(Message const& message)
+void sephi::net::tcp::Server::write_to_all(Chunk const& chunk)
 {
     for (auto const& session : sessions_)
-        session.second->write(message);
+        session.second->write(chunk);
 }
 
 bool sephi::net::tcp::Server::write_to(
-    SessionId const session_id, Message const& message)
+    SessionId const session_id, Chunk const& chunk)
 {
     auto session{sessions_.find(session_id)};
     if (sessions_.end() == session)
         return false;
 
-    session->second->write(message);
+    session->second->write(chunk);
     return true;
 }
 
 void sephi::net::tcp::Server::write_to_all_except(
-    SessionId const session_id, Message const& message)
+    SessionId const session_id, Chunk const& chunk)
 {
     for (auto const& session : sessions_)
         if (session_id != session.first)
-            session.second->write(message);
+            session.second->write(chunk);
 }
 
 void sephi::net::tcp::Server::leave(SessionPtr session)

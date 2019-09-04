@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <functional>
 
-#include "sephi/net/types/message.h"
+#include "sephi/net/types/chunk.h"
 #include "sephi/net/types/remote.h"
 
 
@@ -49,7 +49,7 @@ namespace sephi::net {
         using CommunicationErrorHandler =
             std::function<void(Remote const& remote)>;
         using MessageHandler =
-            std::function<void(Remote const& remote, Message const& message)>;
+            std::function<void(Remote const& remote, Chunk const& chunk)>;
 
     }
 

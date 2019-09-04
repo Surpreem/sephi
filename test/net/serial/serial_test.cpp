@@ -12,7 +12,7 @@ using std::this_thread::sleep_for;
 
 using YAML::LoadFile;
 
-using sephi::net::Message;
+using sephi::net::Chunk;
 using sephi::net::serial::BaudRate;
 using sephi::net::serial::CharacterSize;
 using sephi::net::serial::FlowControl;
@@ -28,7 +28,7 @@ namespace {
     string const port2{"PORT2"};
     constexpr auto limit{1'000};
     string const str{"Async serial communication test message."};
-    Message const message{cbegin(str), cend(str)};
+    Chunk const chunk{cbegin(str), cend(str)};
 
 }
 
@@ -54,11 +54,11 @@ SCENARIO("Two end points can communicate via serial port", "[serial]")
 
             auto transferred_bytes{0U};
             for (auto i{0}; limit != i; ++i) {
-                auto result{client.write(message)};
+                auto result{client.write(chunk)};
                 while (!result) {
                     while (!client.is_opened())
                         sleep_for(1s);
-                    result = client.write(message);
+                    result = client.write(chunk);
                 }
                 transferred_bytes += static_cast<uint32_t>(str.size());
                 // sleep_for(1ms);

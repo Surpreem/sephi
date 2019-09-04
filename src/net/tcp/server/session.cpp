@@ -25,10 +25,10 @@ void sephi::net::tcp::Session::start()
     do_read();
 }
 
-void sephi::net::tcp::Session::write(Message const& message)
+void sephi::net::tcp::Session::write(Chunk const& chunk)
 {
     auto const write_in_progress{!sending_messages_.empty()};
-    sending_messages_.emplace_back(message);
+    sending_messages_.emplace_back(chunk);
     if (!write_in_progress)
         do_write();
 }

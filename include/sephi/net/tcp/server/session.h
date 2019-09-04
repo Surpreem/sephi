@@ -21,7 +21,7 @@ namespace sephi::net::tcp {
         ~Session() noexcept = default;
 
         void start();
-        void write(Message const& message);
+        void write(Chunk const& chunk);
 
         void close();
 
@@ -37,7 +37,7 @@ namespace sephi::net::tcp {
         ServerPacketHandler packet_handler_;
 
         PacketBuffer received_packet_{};
-        std::deque<Message> sending_messages_;
+        std::deque<Chunk> sending_messages_;
     };
 
 }

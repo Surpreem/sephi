@@ -24,7 +24,7 @@ namespace sephi::net::serial {
         void close();
         std::error_code flush() const;
 
-        bool write(Message const& message);
+        bool write(Chunk const& chunk);
 
         [[nodiscard]] bool is_opened() const;
         [[nodiscard]] bool are_all_messages_sent() const;
@@ -54,7 +54,7 @@ namespace sephi::net::serial {
         DataHandler data_handler_;
 
         PacketBuffer received_data_{};
-        std::deque<Message> sending_messages_;
+        std::deque<Chunk> sending_messages_;
     };
 
 }

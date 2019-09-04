@@ -8,7 +8,7 @@ using namespace std::chrono_literals;
 using std::string;
 using std::this_thread::sleep_for;
 
-using sephi::net::Message;
+using sephi::net::Chunk;
 
 
 namespace {
@@ -17,7 +17,7 @@ namespace {
     constexpr auto limit{10'000};
     string const local_host{"127.0.0.1"};
     string const str{"Async TCP/IP communication test message."};
-    Message const message{cbegin(str), cend(str)};
+    Chunk const chunk{cbegin(str), cend(str)};
 
 }
 
@@ -35,11 +35,11 @@ SCENARIO("Server and client can communicate via TCP/IP", "[tcp]")
 
             auto transferred_bytes{0U};
             for (auto i{0}; limit != i; ++i) {
-                auto result{client.write(message)};
+                auto result{client.write(chunk)};
                 while (!result) {
                     while (!client.is_connected())
                         sleep_for(1s);
-                    result = client.write(message);
+                    result = client.write(chunk);
                 }
                 transferred_bytes += static_cast<uint32_t>(str.size());
             }

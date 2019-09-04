@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #include "sephi/net/tcp/server/server.h"
@@ -32,7 +32,7 @@ private:
         sephi::net::tcp::SessionId id, uint8_t const* packet, size_t size)
     {
         total_received_bytes_ += size;
-        server_.write_to(id, sephi::net::Message{packet, size});
+        server_.write_to(id, sephi::net::Chunk{packet, size});
     }
 
 

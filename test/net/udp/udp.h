@@ -21,14 +21,14 @@ public:
     virtual ~UdpWrapper() = default;
 
     void write_to(
-        sephi::net::Remote const& remote, sephi::net::Message const& message)
+        sephi::net::Remote const& remote, sephi::net::Chunk const& chunk)
     {
-        udp_.write_to(remote, message);
+        udp_.write_to(remote, chunk);
     }
 
-    void broadcast(uint16_t port, sephi::net::Message const& message)
+    void broadcast(uint16_t port, sephi::net::Chunk const& chunk)
     {
-        udp_.broadcast(port, message);
+        udp_.broadcast(port, chunk);
     }
 
     void close()
@@ -61,10 +61,10 @@ public:
 
 private:
     void message_handler(
-        sephi::net::Remote const& remote, sephi::net::Message const& message)
+        sephi::net::Remote const& remote, sephi::net::Chunk const& chunk)
     {
-        received_bytes_ += message.size();
-        write_to(remote, message);
+        received_bytes_ += chunk.size();
+        write_to(remote, chunk);
     }
 };
 
@@ -78,8 +78,8 @@ public:
 private:
     void message_handler(
         sephi::net::Remote const& /*remote*/,
-        sephi::net::Message const& message)
+        sephi::net::Chunk const& chunk)
     {
-        received_bytes_ += message.size();
+        received_bytes_ += chunk.size();
     }
 };

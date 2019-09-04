@@ -54,21 +54,21 @@ void sephi::net::udp::Udp::close()
 }
 
 void sephi::net::udp::Udp::write_to(
-    Remote const& remote, Message const& message)
+    Remote const& remote, Chunk const& chunk)
 {
     endpoint ep{make_address(remote.address()), remote.port()};
     socket_.async_send_to(
-        buffer(message.data(), message.size()),
+        buffer(chunk.data(), chunk.size()),
         ep,
         bind(&Udp::handle_write, this, ep, _1, _2));
 }
 
-void sephi::net::udp::Udp::broadcast(uint16_t port, Message const& message)
+void sephi::net::udp::Udp::broadcast(uint16_t port, Chunk const& chunk)
 {
     static network_v4 net_obj;
     endpoint ep{net_obj.broadcast(), port};
     socket_.async_send_to(
-        buffer(message.data(), message.size()),
+        buffer(chunk.data(), chunk.size()),
         ep,
         bind(&Udp::handle_write, this, ep, _1, _2));
 }

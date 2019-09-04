@@ -1,4 +1,4 @@
-#include "test/net/tcp/client.h"
+﻿#include "test/net/tcp/client.h"
 
 #include <iostream>
 
@@ -19,7 +19,7 @@ int main()
     ClientWrapper client{"127.0.0.1", 6705};
 
     string str{"Async TCP/IP communication test message."};
-    Message message{reinterpret_cast<uint8_t const*>(str.c_str()), str.size()};
+    Chunk chunk{reinterpret_cast<uint8_t const*>(str.c_str()), str.size()};
 
     while (!client.is_connected()) {
         sleep_for(1s);
@@ -27,11 +27,11 @@ int main()
 
     auto transferred_bytes{0U};
     for (auto i{0}; limit != i; ++i) {
-        auto result{client.write(message)};
+        auto result{client.write(chunk)};
         if (!result) {
             while (!client.is_connected())
                 sleep_for(1s);
-            result = client.write(message);
+            result = client.write(chunk);
         } else {
             transferred_bytes += static_cast<uint32_t>(str.size());
         }

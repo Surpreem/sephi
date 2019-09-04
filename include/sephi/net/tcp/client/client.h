@@ -21,7 +21,7 @@ namespace sephi::net::tcp {
         void reconnect();
         void close();
 
-        bool write(Message const& message);
+        bool write(Chunk const& chunk);
 
         [[nodiscard]] bool is_connected() const;
         [[nodiscard]] bool are_all_messages_sent() const;
@@ -50,7 +50,7 @@ namespace sephi::net::tcp {
         ClientPacketHandler packet_handler_;
 
         PacketBuffer received_packet_{};
-        std::deque<Message> sending_messages_;
+        std::deque<Chunk> sending_messages_;
     };
 
 }

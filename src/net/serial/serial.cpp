@@ -65,16 +65,16 @@ error_code sephi::net::serial::Serial::flush() const
     return ec;
 }
 
-bool sephi::net::serial::Serial::write(Message const& message)
+bool sephi::net::serial::Serial::write(Chunk const& chunk)
 {
     if (!is_opened())
         return false;
 
     post(
         io_context_,
-        [this, message] {
+        [this, chunk] {
             auto const write_in_progress{!sending_messages_.empty()};
-            sending_messages_.emplace_back(message);
+            sending_messages_.emplace_back(chunk);
             if (!write_in_progress)
                 do_write();
         });

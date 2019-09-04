@@ -23,9 +23,9 @@ public:
     {}
     virtual ~SerialWrapper() = default;
 
-    bool write(sephi::net::Message const& message)
+    bool write(sephi::net::Chunk const& chunk)
     {
-        return serial_.write(message);
+        return serial_.write(chunk);
     }
 
     void close()
@@ -81,7 +81,7 @@ private:
     void data_handler(uint8_t const* data, size_t size)
     {
         received_bytes_ += size;
-        write(sephi::net::Message{data, size});
+        write(sephi::net::Chunk{data, size});
     }
 };
 
