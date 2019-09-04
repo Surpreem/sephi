@@ -160,3 +160,28 @@ SCENARIO("Chunk can be concatenated", "[chunk]")
         }
     }
 }
+
+SCENARIO("Chunk can be inserted")
+{
+    GIVEN("Chunk from a raw C array with 10 elements")
+    {
+        Chunk chunk{raw_data, sizeof(raw_data)};
+
+        WHEN("a integer is inserted")
+        {
+            auto val{3276};
+            auto const first_ptr{reinterpret_cast<uint8_t*>(&val)};
+            auto const bytes{sizeof(decltype(val))};
+            auto const last_ptr{reinterpret_cast<uint8_t*>(&val) + bytes};
+            chunk.insert(std::begin(chunk), first_ptr, last_ptr);
+
+            THEN("restored data equals the origianl")
+            {
+                auto const restored{*reinterpret_cast<int32_t*>(chunk.data())};
+                REQUIRE(val == restored);
+                for (auto i{0}; raw_data_size != i; ++i)
+                    REQUIRE(raw_data[i] == chunk[i + bytes]);
+            }
+        }
+    }
+}

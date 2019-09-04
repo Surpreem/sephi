@@ -12,7 +12,7 @@ if(ENABLE_CATCH)
         ipc/sync/mutex_test.cpp)
 
     set(net
-        net/message/message_test.cpp
+        net/chunk/chunk_test.cpp
         net/serial/serial_test.cpp
         net/tcp/tcp_test.cpp
         net/udp/udp_test.cpp)
