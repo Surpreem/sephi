@@ -81,7 +81,7 @@ private:
     void data_handler(uint8_t const* data, size_t size)
     {
         received_bytes_ += size;
-        write(sephi::net::Chunk{data, size});
+        write(sephi::net::Chunk{data, std::next(data, size)});
     }
 };
 

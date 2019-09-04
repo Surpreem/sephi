@@ -3,6 +3,7 @@
 
 using namespace std::placeholders;
 using std::error_code;
+using std::next;
 using std::thread;
 
 using asio::buffer;
@@ -98,7 +99,9 @@ void sephi::net::udp::Udp::handle_read(
     while (available -= read) {
         read = socket_.receive_from(
             buffer(received_data.get(), available), ep);
-        message_handler_(to_remote(ep), {received_data.get(), read});
+        message_handler_(
+            to_remote(ep),
+            {received_data.get(), next(received_data.get(), read)});
     }
 
     do_read();

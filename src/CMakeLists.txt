@@ -10,7 +10,6 @@ set(net
     net/tcp/client/client.cpp
     net/tcp/server/server.cpp
     net/tcp/server/session.cpp
-    net/types/chunk.cpp
     net/udp/udp.cpp)
 
 set(sync

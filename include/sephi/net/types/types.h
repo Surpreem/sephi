@@ -5,13 +5,13 @@
 #include <cstdint>
 #include <functional>
 
-#include "sephi/net/types/chunk.h"
 #include "sephi/net/types/remote.h"
 
 
 namespace sephi::net {
 
     constexpr size_t max_buffer_size{4096};
+    using Chunk = std::vector<uint8_t>;
     using PacketBuffer = std::array<uint8_t, max_buffer_size>;
 
     enum class ConnectionState {
