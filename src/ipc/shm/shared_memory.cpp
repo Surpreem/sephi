@@ -34,6 +34,11 @@ sephi::ipc::SharedMemory::~SharedMemory() noexcept
     destroy();
 }
 
+bool sephi::ipc::SharedMemory::contains(void const* ptr) const
+{
+    return memory_->belongs_to_segment(ptr);
+}
+
 size_t sephi::ipc::SharedMemory::free_size() const
 {
     return memory_->get_free_memory();

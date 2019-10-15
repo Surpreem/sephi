@@ -202,3 +202,33 @@ SCENARIO("Objects can be created successfully", "[shm]")
         }
     }
 }
+
+SCENARIO("Data can be exchanged via handle")
+{
+    auto const shm_name{random_string()};
+    auto m1{SharedMemory{create_only, shm_name, shm_size}};
+    auto m2{SharedMemory{open_only, shm_name}};
+
+    GIVEN("get handle from the shared object")
+    {
+        auto const x{147};
+
+        auto const obj_name{random_string()};
+        auto& m1_obj{m1.construct<decltype(x)>(obj_name, x)};
+        auto handle{m1.to_handle(m1_obj)};
+
+        WHEN("get the other shared object from the handle")
+        {
+            auto& m2_obj{m2.from_handle<decltype(x)>(handle)};
+
+            THEN("the values of the both objects are equal")
+            {
+                REQUIRE(x == m1_obj);
+                REQUIRE(&m1_obj != &m2_obj);
+                REQUIRE(m1_obj == m2_obj);
+
+                m1.destruct(m1_obj);
+            }
+        }
+    }
+}

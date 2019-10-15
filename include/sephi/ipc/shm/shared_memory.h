@@ -31,6 +31,8 @@ namespace sephi::ipc {
 #endif
 
     public:
+        using Handle = ManagedSharedMemory::handle_t;
+
         template <typename T>
         class Allocator : public ManagedSharedMemory::allocator<T>::type {
             using Base = typename ManagedSharedMemory::allocator<T>::type;
@@ -107,17 +109,28 @@ namespace sephi::ipc {
             return memory_->get_deleter<T>();
         }
 
+        template <typename T>
+        Handle to_handle(T const& obj) const
+        {
+            assert(contains(&obj));
+            return memory_->get_handle_from_address(&obj);
+        }
+
+        template <typename T>
+        T& from_handle(Handle const handle) const
+        {
+            auto ptr{memory_->get_address_from_handle(handle)};
+            assert(contains(ptr));
+            return *static_cast<T*>(ptr);
+        }
+
         template <typename Func>
         void invoke_atomic(Func&& func)
         {
             memory_->atomic_func(func);
         }
 
-        template <typename T>
-        bool contains(T const& obj) const
-        {
-            return memory_->belongs_to_segment(&obj);
-        }
+        bool contains(void const* ptr) const;
 
         [[nodiscard]] size_t free_size() const;
         [[nodiscard]] std::string name() const;
