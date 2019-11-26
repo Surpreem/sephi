@@ -25,8 +25,10 @@ SCENARIO("Server and client can communicate via TCP/IP", "[tcp]")
 {
     GIVEN("server and client")
     {
-        ServerWrapper server{port};
+        // To check sephi::net::tcp::Server::close()
+        // destroy the server object first
         ClientWrapper client{{local_host, port}};
+        ServerWrapper server{port};
 
         WHEN("client can communicate with server")
         {

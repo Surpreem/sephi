@@ -79,9 +79,9 @@ void sephi::net::tcp::Server::leave(SessionPtr session)
 
 void sephi::net::tcp::Server::close()
 {
-    for (auto& session : sessions_) {
-        session.second->close();
-        leave(session.second);
+    for (auto iter{sessions_.begin()}; sessions_.end() != iter;) {
+        iter->second->close();
+        leave((iter++)->second);
         sleep_for(1ms);
     }
 }
