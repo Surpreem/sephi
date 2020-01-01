@@ -28,7 +28,7 @@ namespace sephi::net::udp {
 
     private:
         void do_read();
-        void handle_read(endpoint& ep, std::error_code const& ec, size_t size);
+        void handle_read(std::error_code const& ec, size_t size);
 
         void handle_write(
             endpoint const& ep, std::error_code const& ec, size_t size) const;
@@ -37,6 +37,7 @@ namespace sephi::net::udp {
         std::thread runner_;
         asio::io_context io_context_;
         asio::ip::udp::socket socket_;
+        endpoint sender_ep_;
 
         CommunicationErrorHandler communication_error_handler_;
         MessageHandler message_handler_;

@@ -16,7 +16,7 @@ using sephi::net::Remote;
 
 
 namespace sephi::net::udp {
-    
+
     Remote to_remote(endpoint const& ep)
     {
         return {ep.address().to_string(), ep.port()};
@@ -30,8 +30,8 @@ sephi::net::udp::Udp::Udp(
     CommunicationErrorHandler communication_error_handler,
     MessageHandler message_handler)
     : socket_{io_context_, asio::ip::udp::v4()},
-      communication_error_handler_{move(communication_error_handler)},
-      message_handler_{move(message_handler)}
+    communication_error_handler_{move(communication_error_handler)},
+    message_handler_{move(message_handler)}
 {
     socket_.set_option(asio::socket_base::reuse_address{true});
     socket_.set_option(asio::socket_base::broadcast{true});
@@ -77,18 +77,16 @@ void sephi::net::udp::Udp::broadcast(uint16_t port, Chunk const& chunk)
 
 void sephi::net::udp::Udp::do_read()
 {
-    static endpoint ep;
     socket_.async_receive_from(
         null_buffers(),
-        ep,
-        bind(&Udp::handle_read, this, ep, _1, _2));
+        sender_ep_,
+        bind(&Udp::handle_read, this, _1, _2));
 }
 
-void sephi::net::udp::Udp::handle_read(
-    endpoint& ep, error_code const& ec, size_t /*size*/)
+void sephi::net::udp::Udp::handle_read(error_code const& ec, size_t /*size*/)
 {
     if (ec) {
-        communication_error_handler_(to_remote(ep));
+        communication_error_handler_(to_remote(sender_ep_));
         do_read();
         return;
     }
@@ -98,9 +96,9 @@ void sephi::net::udp::Udp::handle_read(
     auto read{static_cast<size_t>(0)};
     while (available -= read) {
         read = socket_.receive_from(
-            buffer(received_data.get(), available), ep);
+            buffer(received_data.get(), available), sender_ep_);
         message_handler_(
-            to_remote(ep),
+            to_remote(sender_ep_),
             {received_data.get(), next(received_data.get(), read)});
     }
 
@@ -108,7 +106,7 @@ void sephi::net::udp::Udp::handle_read(
 }
 
 void sephi::net::udp::Udp::handle_write
-    (endpoint const& ep, error_code const& ec, size_t /*size*/) const
+(endpoint const& ep, error_code const& ec, size_t /*size*/) const
 {
     if (ec) {
         communication_error_handler_(to_remote(ep));
