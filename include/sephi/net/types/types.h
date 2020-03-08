@@ -20,7 +20,8 @@ namespace sephi::net {
 
     namespace serial {
 
-        using ConnectionHandler = std::function<void(ConnectionState state)>;
+        using ConnectionHandler = std::function<
+            void(ConnectionState state, std::error_code const& ec)>;
         using DataHandler =
             std::function<void(uint8_t const* data, size_t size)>;
 
@@ -30,13 +31,15 @@ namespace sephi::net {
 
         using SessionId = uint64_t;
 
-        using ServerConnectionHandler =
-            std::function<void(SessionId id, ConnectionState state)>;
+        using ServerConnectionHandler = std::function<
+            void(SessionId id,
+                ConnectionState state,
+                std::error_code const& ec)>;
         using ServerPacketHandler = std::function<
             void(SessionId id, uint8_t const* packet, size_t size)>;
 
-        using ClientConnectionHandler =
-            std::function<void(ConnectionState state)>;
+        using ClientConnectionHandler = std::function<
+                void(ConnectionState state, std::error_code const& ec)>;
         using ClientPacketHandler = 
             std::function<void(uint8_t const* packet, size_t size)>;
 
@@ -46,8 +49,8 @@ namespace sephi::net {
 
     namespace udp {
 
-        using CommunicationErrorHandler =
-            std::function<void(Remote const& remote)>;
+        using CommunicationErrorHandler = std::function<
+            void(Remote const& remote, std::error_code const& ec)>;
         using MessageHandler =
             std::function<void(Remote const& remote, Chunk const& chunk)>;
 

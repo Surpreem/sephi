@@ -3,6 +3,8 @@
 
 #include "sephi/net/serial/serial.h"
 
+#include <iostream>
+
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
@@ -18,7 +20,7 @@ public:
         : serial_{
             move(port_name),
             params,
-            std::bind(&SerialWrapper::connection_handler, this, _1),
+            std::bind(&SerialWrapper::connection_handler, this, _1, _2),
             data_handler}
     {}
     virtual ~SerialWrapper() = default;
@@ -52,11 +54,21 @@ protected:
     size_t received_bytes_{0};
 
 private:
-    void connection_handler(sephi::net::ConnectionState connection_state)
+    void connection_handler(
+        sephi::net::ConnectionState connection_state,
+        std::error_code const& ec)
     {
         if (sephi::net::ConnectionState::connected == connection_state) {
             return;
         }
+
+        std::cout
+            << "Disconnected: "
+            << ec.message()
+            << "("
+            << ec.value()
+            << ")"
+            << std::endl;
 
         std::this_thread::sleep_for(1s);
         serial_.reopen();

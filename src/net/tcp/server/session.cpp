@@ -49,7 +49,7 @@ void sephi::net::tcp::Session::do_read()
 void sephi::net::tcp::Session::handle_read(error_code const& ec, size_t size)
 {
     if (ec) {
-        server_.leave(shared_from_this());
+        server_.leave(shared_from_this(), ec);
         return;
     }
 
@@ -73,7 +73,7 @@ void sephi::net::tcp::Session::handle_write(
     error_code const& ec, size_t /*size*/)
 {
     if (ec) {
-        server_.leave(shared_from_this());
+        server_.leave(shared_from_this(), ec);
         return;
     }
 

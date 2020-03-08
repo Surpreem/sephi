@@ -70,18 +70,19 @@ void sephi::net::tcp::Server::write_to_all_except(
             session.second->write(chunk);
 }
 
-void sephi::net::tcp::Server::leave(SessionPtr session)
+void sephi::net::tcp::Server::leave(SessionPtr session, error_code const& ec)
 {
     auto const session_id{session_ptr_to_id(session)};
     sessions_.erase(session_id);
-    connection_handler_(session_id, ConnectionState::disconnected);
+    connection_handler_(session_id, ConnectionState::disconnected, ec);
 }
 
 void sephi::net::tcp::Server::close()
 {
+    auto const ec{error_code{}};
     for (auto iter{sessions_.begin()}; sessions_.end() != iter;) {
         iter->second->close();
-        leave((iter++)->second);
+        leave((iter++)->second, ec);
         sleep_for(1ms);
     }
 }
@@ -103,7 +104,7 @@ void sephi::net::tcp::Server::handle_accept(error_code const& ec)
         move(socket_), *this, packet_handler_)};
     auto const session_id{session_ptr_to_id(session_ptr)};
 
-    connection_handler_(session_id, ConnectionState::connected);
+    connection_handler_(session_id, ConnectionState::connected, ec);
     sessions_.emplace(make_pair(session_id, session_ptr));
     session_ptr->start();
 

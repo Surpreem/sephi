@@ -86,7 +86,7 @@ void sephi::net::udp::Udp::do_read()
 void sephi::net::udp::Udp::handle_read(error_code const& ec, size_t /*size*/)
 {
     if (ec) {
-        communication_error_handler_(to_remote(sender_ep_));
+        communication_error_handler_(to_remote(sender_ep_), ec);
         do_read();
         return;
     }
@@ -109,6 +109,6 @@ void sephi::net::udp::Udp::handle_write
 (endpoint const& ep, error_code const& ec, size_t /*size*/) const
 {
     if (ec) {
-        communication_error_handler_(to_remote(ep));
+        communication_error_handler_(to_remote(ep), ec);
     }
 }

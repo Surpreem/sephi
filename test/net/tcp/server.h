@@ -14,7 +14,7 @@ public:
     explicit ServerWrapper(uint16_t port)
         : server_{
             port,
-            std::bind(&ServerWrapper::connection_handler, this, _1, _2),
+            std::bind(&ServerWrapper::connection_handler, this, _1, _2, _3),
             std::bind(&ServerWrapper::message_handler, this, _1, _2, _3)}
     {}
     ~ServerWrapper()
@@ -24,9 +24,24 @@ public:
 
 private:
     void connection_handler(
-        sephi::net::tcp::SessionId /*id*/,
-        sephi::net::ConnectionState /*connection_state*/)
-    {}
+        sephi::net::tcp::SessionId id,
+        sephi::net::ConnectionState connection_state,
+        std::error_code const& ec)
+    {
+        if (sephi::net::ConnectionState::connected == connection_state) {
+            return;
+        }
+
+        std::cout
+            << "Disconnected: "
+            << id
+            << " - "
+            << ec.message()
+            << "("
+            << ec.value()
+            << ")"
+            << std::endl;
+    }
 
     void message_handler(
         sephi::net::tcp::SessionId id, uint8_t const* packet, size_t size)

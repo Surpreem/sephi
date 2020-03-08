@@ -28,7 +28,7 @@ namespace sephi::net::tcp {
         void write_to_all_except(
             SessionId session_id, Chunk const& chunk);
 
-        void leave(SessionPtr session);
+        void leave(SessionPtr session, std::error_code const& ec);
         void close();
 
     private:

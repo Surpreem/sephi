@@ -108,7 +108,7 @@ void sephi::net::serial::Serial::do_open()
 void sephi::net::serial::Serial::handle_open(error_code const& ec)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
@@ -120,11 +120,11 @@ void sephi::net::serial::Serial::handle_open(error_code const& ec)
 
     auto const err_code{flush()};
     if (err_code) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, err_code);
         return;
     }
 
-    call_back_connection_handler(ConnectionState::connected);
+    call_back_connection_handler(ConnectionState::connected, err_code);
     do_read();
 }
 
@@ -138,7 +138,7 @@ void sephi::net::serial::Serial::do_read()
 void sephi::net::serial::Serial::handle_read(error_code const& ec, size_t size)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
@@ -159,7 +159,7 @@ void sephi::net::serial::Serial::handle_write(
     error_code const& ec, size_t /*size*/)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
@@ -169,8 +169,8 @@ void sephi::net::serial::Serial::handle_write(
 }
 
 void sephi::net::serial::Serial::call_back_connection_handler(
-    ConnectionState state)
+    ConnectionState state, error_code const& ec)
 {
     connection_state_ = state;
-    connection_handler_(connection_state_);
+    connection_handler_(connection_state_, ec);
 }

@@ -85,11 +85,11 @@ void sephi::net::tcp::Client::do_connect()
 void sephi::net::tcp::Client::handle_connect(error_code const& ec)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
-    call_back_connection_handler(ConnectionState::connected);
+    call_back_connection_handler(ConnectionState::connected, ec);
     do_read();
 }
 
@@ -103,7 +103,7 @@ void sephi::net::tcp::Client::do_read()
 void sephi::net::tcp::Client::handle_read(error_code const& ec, size_t size)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
@@ -124,7 +124,7 @@ void sephi::net::tcp::Client::handle_write(
     error_code const& ec, size_t /*size*/)
 {
     if (ec) {
-        call_back_connection_handler(ConnectionState::disconnected);
+        call_back_connection_handler(ConnectionState::disconnected, ec);
         return;
     }
 
@@ -134,8 +134,8 @@ void sephi::net::tcp::Client::handle_write(
 }
 
 void sephi::net::tcp::Client::call_back_connection_handler(
-    ConnectionState state)
+    ConnectionState state, error_code const& ec)
 {
     connection_state_ = state;
-    connection_handler_(connection_state_);
+    connection_handler_(connection_state_, ec);
 }

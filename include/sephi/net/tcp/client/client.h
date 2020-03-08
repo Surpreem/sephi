@@ -36,7 +36,8 @@ namespace sephi::net::tcp {
         void do_write();
         void handle_write(std::error_code const& ec, size_t size);
 
-        void call_back_connection_handler(ConnectionState state);
+        void call_back_connection_handler(
+            ConnectionState state, std::error_code const& ec);
 
 
         ConnectionState connection_state_{ConnectionState::disconnected};
