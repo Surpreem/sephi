@@ -5,6 +5,7 @@ using namespace std::placeholders;
 using std::error_code;
 using std::next;
 using std::thread;
+using std::vector;
 
 using asio::buffer;
 using asio::ip::make_address;
@@ -92,14 +93,14 @@ void sephi::net::udp::Udp::handle_read(error_code const& ec, size_t /*size*/)
     }
 
     auto available{socket_.available()};
-    auto const received_data{std::make_unique<uint8_t[]>(available)};
+    auto received_data{vector<char>(available)};
     auto read{static_cast<size_t>(0)};
     while (available -= read) {
         read = socket_.receive_from(
-            buffer(received_data.get(), available), sender_ep_);
+            buffer(received_data.data(), available), sender_ep_);
         message_handler_(
             to_remote(sender_ep_),
-            {received_data.get(), next(received_data.get(), read)});
+            {received_data.data(), next(received_data.data(), read)});
     }
 
     do_read();
